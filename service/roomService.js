@@ -18,7 +18,7 @@ const getAllRooms = async () => {
 };
 
 const getRoomById = async (id) => {
-  const room = await Room.findById(id).populate('hotelId');
+  const room = await Room.findById(id).populate('hotel');
   if (!room) throw new Error('Room not found');
   return room;
 };
@@ -36,7 +36,8 @@ const deleteRoom = async (id) => {
 };
 
 const getRoomsByHotel = async (hotelId) => {
-  return await Room.find({ hotelId });
+  console.log(hotelId)
+  return await Room.find({ hotel:hotelId });
 };
 
 module.exports = {

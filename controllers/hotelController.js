@@ -13,6 +13,18 @@ const hotelSchema = Joi.object({
   manager: Joi.string().required()
 });
 
+// Joi validation schema
+const updateHotelSchema = Joi.object({
+  name: Joi.string().required(),
+  description: Joi.string().allow('', null),
+  address: Joi.string().allow('', null),
+  city: Joi.string().required(),
+  pincode: Joi.string().required(),
+  images: Joi.array().items(Joi.string().uri()).default([]),
+  amenities: Joi.array().items(Joi.string()).default([]),
+  manager: Joi.string().optional()
+});
+
 // Create Hotel
 const createHotel = async (req, res) => {
   const { error } = hotelSchema.validate(req.body);
@@ -36,6 +48,15 @@ const getAllHotels = async (req, res) => {
   }
 };
 
+const getAllUserHotelsController = async (req, res) => {
+  try {
+    const hotels = await hotelService.getAllManagerHotels(req.body);
+    res.json(hotels);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Get One Hotel
 const getHotelById = async (req, res) => {
   try {
@@ -48,12 +69,16 @@ const getHotelById = async (req, res) => {
 
 // Update Hotel
 const updateHotel = async (req, res) => {
-  const { error } = hotelSchema.validate(req.body);
+  console.log(req)
+  const { error } = updateHotelSchema.validate(req.body);
   if (error) return res.status(400).json({ message: error.details[0].message });
 
   try {
+    console.log(req.body)
     const hotel = await hotelService.updateHotel(req.params.id, req.body);
-    res.json(hotel);
+    res.json({
+      data:hotel
+    });
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -86,4 +111,5 @@ module.exports = {
   updateHotel,
   deleteHotel,
   searchHotels,
+  getAllUserHotelsController
 };

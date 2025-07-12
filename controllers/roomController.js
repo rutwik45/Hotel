@@ -7,8 +7,6 @@ const roomSchema = Joi.object({
   roomType: Joi.string().required(),
   pricePerDay: Joi.number().required(),
   totalRooms: Joi.number().required(),
-  amenities: Joi.array().items(Joi.string()).default([]),
-  images: Joi.array().items(Joi.string().uri()).default([]),
 });
 
 // Create Room
@@ -46,8 +44,8 @@ const getRoomById = async (req, res) => {
 
 // Update room
 const updateRoom = async (req, res) => {
-  const { error } = roomSchema.validate(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
+  // const { error } = roomSchema.validate(req.body);
+  // if (error) return res.status(400).json({ message: error.details[0].message });
 
   try {
     const room = await roomService.updateRoom(req.params.id, req.body);

@@ -7,6 +7,7 @@ const bookingSchema = new mongoose.Schema({
   checkInDate: Date,
   checkOutDate: Date,
   totalPrice: Number,
+  roomsBooked:Number
 }, { timestamps: true });
 
 module.exports = mongoose.model('Booking', bookingSchema);

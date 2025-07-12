@@ -22,6 +22,21 @@ const getUserByIdService = async (userId) => {
   return user;
 };
 
+const loginService = async (data) => {
+  const {identifier,role}=data
+  const user = await User.findOne({
+    $or:[
+      { email:identifier,},
+      { phoneNumber:identifier}
+    ],
+    role
+  });
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
+};
+
 // Service to update a user
 const updateUserService = async (userId, userData) => {
   const { username, email, phoneNumber, city, password,pincode } = userData;
@@ -62,4 +77,5 @@ module.exports = {
   updateUserService,
   deleteUserService,
   getAllUsersService,
+  loginService
 };

@@ -27,6 +27,17 @@ const createUser = async (req, res) => {
     }
 };
 
+const loginUser = async (req, res) => {
+
+
+    try {
+        const user = await userService.loginService(req.body);
+        res.status(201).json({ data: user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // READ User (Get User by ID)
 const getUserById = async (req, res) => {
     const { userId } = req.params;
@@ -83,4 +94,5 @@ module.exports = {
     updateUser,
     deleteUser,
     getAllUsers,
+    loginUser
 };
